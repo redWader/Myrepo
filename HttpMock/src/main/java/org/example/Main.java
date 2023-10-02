@@ -1,5 +1,8 @@
 package org.example;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import Handlers.GetInfo;
 import com.sun.net.httpserver.HttpServer;
@@ -11,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class Main {
+    private static Logger LOGGER = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001),0);
 
@@ -20,6 +24,7 @@ public class Main {
 
         server.setExecutor(threadPoolExecutor);
         server.start();
+        LOGGER.info("Сервер запущен на 8001 порту");
 
 
     }
