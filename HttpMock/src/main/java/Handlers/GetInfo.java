@@ -3,8 +3,10 @@ package Handlers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.logging.Logger;
+
+import static org.example.Main.LOGGER;
 
 public class GetInfo implements HttpHandler {
 
@@ -25,12 +27,20 @@ public class GetInfo implements HttpHandler {
 
     private void handleResponse(HttpExchange httpExchange)  throws  IOException {
         OutputStream outputStream = httpExchange.getResponseBody();
-        StringBuilder htmlBuilder = new StringBuilder();
+        InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+        BufferedReader br = new BufferedReader(isr);
 
-        // encode HTML content
+        int b;
+        StringBuilder buf = new StringBuilder();
+        while ((b = br.read()) != -1) {
+            buf.append((char) b);
+        }
+        br.close();
+        isr.close();
+
+        String requestBody = buf.toString();
+        LOGGER.info(requestBody);
         String htmlResponse = "qwerty";
-
-        // this line is a must
         httpExchange.sendResponseHeaders(200, htmlResponse.length());
 
         outputStream.write(htmlResponse.getBytes());
